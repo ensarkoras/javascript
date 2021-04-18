@@ -1,0 +1,702 @@
+Variables
+
+değişkene atadığın değerin type ını görebilirsin.
+
+var ad = "Ensar"
+log(ad + " type = " + typeof ad)
+
+
+Objects
+
+var person = {
+    name : "Ensar",
+    age : 21,
+    hasDriverLicence : true,
+    dateOfBirth : "01/01/1990"
+}
+
+log(JSON.stringify(person)) // JSON a çevirmen gerek.
+log(person.age)
+
+log(Object.values(person)) // value değerlerini bir dizi şeklinde döner.
+log(Object.keys(person)) // key değerlerini bir dizi şeklinde döner.
+
+
+Arrays
+
+var names = ['Ali', 'Veli', 'Mehmet']
+
+for(var n of names){
+    log(n)
+}
+
+names.forEach(function (n,index) {
+    log(index + " - " + n)
+})
+
+
+Functions (geriye değer döndürebilirsin veya void olabilir.)
+
+function addNumbers() {
+    log('addNumbers')
+}
+
+addNumbers();
+
+function addNumbers(a , b) {
+   return a + b
+}
+
+log(addNumbers(3 ,4 ));
+
+function multiplyNumbers(n1, n2) {
+    var result = n1 * n2
+    return result
+}
+
+var result = multiplyNumbers(5,6)
+log(result)
+
+
+
+Equality without type coercion and 3 equals sign
+
+Eğer 3 === kullanmazsan js tip çevirimi yapar.
+"0" veya 0 ı false olarak çevirir.
+
+log("With type coercion")
+log(typeof 0 + " " + typeof false);
+log(0 == false);
+
+log(typeof "0" + " " + typeof false);
+log("0" == false);
+
+log(typeof 1 + " " + typeof "1");
+log(1 == "1");
+
+log("Without type coercion")
+
+log(typeof 0 + " " + typeof false);
+log(0 === false);
+
+log(typeof "0" + " " + typeof false);
+log("0" === false);
+
+log(typeof 1 + " " + typeof "1");
+log(1 === "1");
+
+
+Map | Filter | Reduce
+
+Dizideki her eleman için function çalışır.
+Transformation için kullanılır.
+map de function bir value döner.
+
+var map = [1,2,3,4,5].map(function (n) {
+    return n * 2
+})
+
+log(map)
+
+
+Filter daki function boolean değer döner.
+
+var filter = [1,2,3,4,5].filter(function (n) {
+    if(n > 3) return true
+    else return false
+})
+
+log(filter)
+
+var filter = [1,2,3,4,5].filter(function (n) {
+    return n > 3
+})
+
+log(filter)
+
+Reduce
+reduce fonksiyonunun bu basit kullanımı 2 parametre alır;
+ilk parametre işlemin yapılacağı bir fonksiyon (reducer fonksiyonu), diğer parametre ise ilk değerdir.
+reduce fonksiyonu, data dizisinin her bir elemanı kadar reducer fonksiyonunu çağırır. 
+Bu işlemin sonucunu kümülatif olarak hesaplar. Yapılan her işlemin sonucu bir sonraki fonksiyon çağırımına 
+ilk parametre olarak aktarılır. 
+
+var reduce = [1,2,3,4,5].reduce(function(accumulator, current) {
+    return accumulator + current
+})
+log(reduce)
+
+
+Callbacks
+Bir fonksiyonun çalışması tamamlandıktan sonra,
+başka bir fonksiyonun çalışmasını sağlayan fonksiyonlar callback function olarak adlandırılır.
+
+function bilgi(adSoyad, callback) {
+    log(adSoyad)
+    callback()
+}
+
+function numara() {
+    log(123456)
+}
+
+bilgi('Ensar', numara)
+
+İşlemimizde numara() fonksiyonu, bilgi() fonksiyonu içerisinde parametre olarak gönderdik.
+ Javascript fonksiyonları nesne tipine tanımlar.
+ Bir fonksiyonu parametre olarak verebilir veya bir değişken içerisinde tanımlayabiliriz.
+
+Callback fonksiyonları başka bir fonksiyona parametre olarak verilir ve istendiğinde execute edilir.
+
+function callbackExample(name, callback) {
+    log(callback(name))
+}
+
+
+callbackExample('ensar', function(name) {
+    return "Hello " + name
+})
+
+İstersen aşağıdaki gibi function kısmını ayrı yazıpta çağırabilirsin.
+
+var callback = function(name) {
+    return "Hello " + name
+}
+callbackExample('ensar', callback )
+
+Daha önce yazdığımız map funksiyonu da aslında bir callback function alıyordu.
+Aşağıdaki gibi yazabiliriz mesela.
+
+var mapCallback = function (n) {
+    return n * 2
+}
+
+var map = [1,2,3,4].map(mapCallback)
+
+log(map)
+
+
+
+Named Exports / Import
+
+birden fazla değer export ederken kullanırız.
+Math.js adlı bir js dosyası oluşturduk.
+index.js de import * as Math from './Math'; şeklinde import ettik.
+Daha sonra aşağıdaki şekilde kullandık.
+
+log(Math.add(10,2))
+
+Hepsini import etmek yerine aşağıdaki gibi sadece istediğin kısmı import edebilirsin.
+
+import {add, divide, PI } from './Math'
+
+log(PI)
+log(add(9,2))
+
+
+Default Exports / Import'
+
+Tek bir değer export ederken kullanırız.
+Animal.js oluşturduk.
+export default class Animal { olarak tanımladık.
+index.js de ise import Animal from './Animal' şeklinde import ettik.
+
+var animal = new Animal();
+log(animal.getClassType());
+
+illa class olmasına gerek yok istediğin function veya value olabilir.
+
+
+var yerine let kullan. var artık kullanma.
+değişmeyecek değerlerin içinse const kullan.
+güvenlik açısından öncelikle const kullan. Eğer değiştirme ihtiyacın olursa let yap.
+
+Fakat aşağıdaki code doğru bir koddur. Çünkü burda reassign etmiyoruz.
+Sadece contentini değiştiriyoruz.
+
+const person = {};
+person['name'] = 'Maria'
+log(person.name)
+
+const array = []
+array.push('Ensar from array')
+log(array[0])
+
+
+Template / Literals
+
+${} arasında istedğin js i yazabilirsin.
+
+const name = 'Ensar'
+const country = 'Turkey'
+const age = 33
+
+log(`Name : ${name} Country : ${country} Age : ${age}`)
+log(`Name : ${name.length} Country : ${country} Age : ${age}`)
+log(`Name : ${name.toUpperCase()} Country : ${country} Age : ${age}`)
+
+
+Array & Spread Operator Arrays
+
+Spred Operatör, expressionların, fonksiyonlarda birden fazla parametre olarak kullanılmasına, 
+arraylerin içerisinde birden fazla eleman olarak genişletilmesine, yayılmasına olanak sağlar.
+
+Fonksiyonlara parametre olarak Array geçebilirsin.
+Başka arraylari de dahil ederek yeni array oluşturabilirsin.
+Bir arrayden kopya array oluşturursun.
+
+const arrayOne = ['ALi', 'Veli', 'Deli']
+const arrayTwo = ['Canan', 'Cansu']
+
+const concatArray = [...arrayOne]
+log(concatArray)
+
+concatArray.forEach(function(name) {
+    log(name)
+})
+
+const name = 'Hakkı'
+const nameToArray = [...name]
+log(nameToArray)
+
+const addNumbers = function (n1,n2,n3) {
+    return n1 + n2 + n3
+}
+const numbers = [1,3,6]
+
+const addition = addNumbers(...numbers)
+log(addition)
+
+let numbers2 = ['2','5','6','7','3']
+log([...numbers2])
+
+const address = {
+    city : 'LA',
+    country :'USA',
+    postcode : 'LA213'
+}
+
+const name = {
+    firstName : 'Ali',
+    lastName : 'Gelen'
+}
+
+const person = {...address, ...name}
+
+log(JSON.stringify(person))
+console.log(person)
+
+
+Arrow Functions
+
+const hello = function() {
+  const es6 = 'ES6';
+  return `Hello ${es6}`;
+};
+
+const powers = [1,2,3,4,5].map(function(number, index) {
+  return Math.pow(number, index);
+});
+
+
+const add = function(n1, n2) {
+  return n1 + n2;
+};
+
+const milesToKm = function(miles) {
+  return miles * 1.60934;
+};
+
+log(hello());
+log(powers);
+log(add(100,100));
+log(milesToKm(100));
+
+Aşağıdaki şekile çevirdik.
+
+const hello = () => {
+    const es6 = 'ES6';
+    return `Hello ${es6}`;
+  };
+  
+  const powers = [1,2,3,4,5].map((number, index) => Math.pow(number, index))
+     
+  const add = (n1, n2) => n1 + n2;
+    
+  const milesToKm = miles => miles * 1.60934
+
+
+Enhanced Object Properties
+
+Yazım kolaylığı sağlıyorlar.
+
+const calculator = name => {
+    return {
+        name : name,
+        add : function(n1, n2) {
+            return n1 + n2
+        }
+    }
+}
+
+Aşağıdaki şekilde değiştirdik.
+
+const calculator = name => {
+    return {
+        name,
+        add(n1, n2) {
+            return n1 + n2
+        }
+    }
+}
+
+veya aşağıdaki şekilde de kullabilirsin.
+
+const pricePropName = 'PRICE'
+
+const calculator = (name, price) => {
+    return {
+        name,
+        add(n1, n2) {
+            return n1 + n2
+        },
+        [pricePropName.toLowerCase()] : price
+    }
+}
+
+const calc = calculator('Ali', 23.20)
+log(calc.price)
+
+
+Array Destructing
+
+İstediğimiz nesnelere erişebiliriz. Aynı isimde olmalarına gerek yok.
+
+const names = ['Anna', 'Mariam', 'Joe', 'Mark', 'Matt'];
+const [anna, mariam, joe] = names
+log(`${anna} ${mariam} ${joe}`);
+
+const names = ['Anna', 'Mariam', 'Joe', 'Mark', 'Matt'];
+const [a, mariam, joe] = names
+log(`${a} ${mariam} ${joe}`);
+
+Aşağıdaki şekilde yazarsan aradaki değeri almaz.
+const [anna, , joe] = names
+
+const [anna, , joe, ...restOfNames] = names
+log(restOfNames)
+
+
+Object Destructing
+
+objectDestructing daki user ı kullandık.
+Aşağıdaki şekillerde destruct edebilirsin.
+
+const { name , age , address : { country : theCountry , fullAddress : { doorNumber : theDoorNumber } } } = user
+
+  log(name);
+  log(age);
+  log(theCountry);
+  log(theDoorNumber);
+
+const { name , age , address : { country , fullAddress : { doorNumber } } } = user
+
+  log(name);
+  log(age);
+  log(country);
+  log(doorNumber);
+
+İstersen aşağıdaki şekilde propertylere başka bir isim verebilirsin.
+  const { name : n , age : theAge ,
+
+log(n);
+log(theAge);
+
+
+Function Default Parameters
+
+const calculatePay = (maas , bonus = 0) =>
+    maas + bonus
+
+log(calculatePay(10000))
+log(calculatePay(10000 , 100))
+
+veya object de olabilir.
+
+const calculatePay = (maas , bonus = {
+    ekipBonus :0,
+    calisanBonus : 0
+}) =>
+    maas + bonus.ekipBonus + bonus.calisanBonus
+
+log(calculatePay(10000 ))
+log(calculatePay(10000, { ekipBonus : 2000, calisanBonus : 3000}))
+
+
+ES6 Classes
+
+class Animal {
+    constructor( name , age){
+        log(`${name} is an aminal and was created`)
+        this.name = name
+        this.age = age
+    }
+    eat(){
+        log(`${this.name} is eating`)
+    }
+    sayYourAge(){
+        log(`${this.name} is ${this.age} years old`)
+    }
+}
+
+var kedi = new Animal('cafer', 20)
+kedi.eat()
+kedi.sayYourAge()
+
+
+Class Inheritance
+
+class Dog extends Animal {
+    constructor(name, age, breed){
+        super(name, age)
+        this.breed = breed
+    }
+    logBreed(){
+        log(`${this.name} is a ${this.breed}`)
+    }
+    logAgeFromDog(){
+        super.sayYourAge()
+    }
+}
+
+const mike = new Dog('Mike', 3 , 'Bulldog')
+mike.logBreed()
+mike.logAgeFromDog()
+mike.eat()
+
+
+Static Methods
+
+instance almadan direk çağırabilirsin.
+
+    static iAmAstaticMethod(){
+        log('I am static method')
+    }
+    Animal.iAmAstaticMethod();
+
+
+Promises Keynote
+
+The promise object is used for async computations.
+Represents a value which may be available now, or in the future, or never.
+
+Promises states --> 
+Pending : initial state, not fullfilled or rejected
+Fulfilled : meaning that the operation completed successfully.
+Rejected : meaning that the operation failed.
+
+Server a bir request attağımızda bize bir response döner. Bu bir Promise Object dir.
+Eğer bu promise Fulfilled olursa then bloğu eğer rejected olursa catch bloğu çalışır.
+then veya catch bloğunda ise callback function çalıştırırsın.
+
+const promise = new Promise((resolve , reject) => {
+    setTimeout(()=> {
+        resolve("data back from the server")
+    }, 2000)
+    setTimeout(()=> {
+        reject("there is an error")
+    }, 3000)
+} )
+
+promise.then((response) => {
+    log(response)
+}).catch((error) => {
+    log(error)
+})
+
+
+PROMISE.ALL
+
+birden fazla promise in aynı invoke edilmesidir. Tüm promiselerin fullfilled olması lazım.
+Yoksa hata alırsın.
+
+const namesPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(['Anna', 'Jones', 'Ali', 'Jake']);
+    }, 1000);
+  
+    setTimeout(() => {
+      reject("no data back from the server, there was an error");
+    }, 5000);
+  });
+  
+  const surnamesPromise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(['Williams', 'Bravo', 'Mohammado', 'Smith']);
+    }, 1000);
+  
+    setTimeout(() => {
+      reject("no data back from the server, there was an error");
+    }, 5000);
+  });
+
+  Promise.all([namesPromise, surnamesPromise]).then(data => {
+    const [ adlar, soyadlar] = data
+    for (let index = 0; index < adlar.length; index++) {
+        const ad = adlar[index];
+        const soyad = soyadlar[index];
+        log(`${ad} ${soyad}`)
+    }
+  }).catch(error => {
+    log(error);
+  });
+
+
+  PROMISES & FETCH API
+
+  const getRandomUsers = n => {
+    const fetchRandomUsers = fetch(`https://randomuser.me/api/?results=${n}`)
+    fetchRandomUsers.then(data => {
+        data.json().then(randomUsers => {
+            console.log(randomUsers.results)
+            randomUsers.results.forEach(user => {
+                const { gender , email, dob : { date : theDate , age : theAge} } = user
+                log(`${gender} - ${email} - ${theAge} - ${theDate}`) 
+            });
+        })
+    })
+
+}
+
+getRandomUsers(10)
+
+
+GENERATORS KEYNOTE (Pause Functions)
+
+Normalde fonksiyonlar 3 şekilde sonlanır.
+fonksiyonun işleminin tamamlanması.
+return fonksiyonu sonuç dönmesi
+throw ile hata dönmesi
+
+Generator fonksiyona sanki bir iterator gibi davranıp,
+fonksiyon içerisinde akışı durdurup ilerletebildiğiniz bir mekanizmaya dönüştürür.
+
+Generator fonksiyonu önünde * ile tanımlayıp içerisinde yield ile akışı kontrol edeceğiniz yerleri belirtip,
+ fonksiyonun akışını dışarıdan .next() ile ilerleterek kullanabilirsiniz.
+ generator fonksiyonunda iterator ile programı durdurup ilerletmek bizim kontrolümüzdedir.
+
+const getNumbers = function* (){
+    yield 1;
+    yield "hello";
+    yield true;
+    yield { name : 'Ali'};
+    return 'I am done'
+}
+
+const numbersGen = getNumbers();
+log(numbersGen.next().value)
+log(numbersGen.next().value)
+log(numbersGen.next().value)
+log(JSON.stringify(numbersGen.next().value))
+log(numbersGen.next().value)
+
+Burda yield return gibi davranır fakat return sadece value dönmez aynı zamanda fonksiyonun
+ tamamlanması ile ilgili sonucuda döner.
+
+ next() ile return edilen satırlar done olmuş olur. 
+
+ const getNumbers = function* (numbers) {
+    for (let index = 0; index < numbers.length; index++) {
+        yield numbers[index]
+    }
+}
+
+const getNumbersGen = getNumbers([1,2,3,4,5])
+
+const interval = setInterval(() => {
+    const next = getNumbersGen.next()
+    if(next.done){
+        log('this generator is done')
+        clearInterval(interval)
+    } else {
+        const number = next.value
+        log(number)
+    }
+    
+}, 1000);
+
+
+COROUTINES KEYNOTE
+iç içe birçok callback ve promise olduğunda yazımı kolaylaştırmak için coroutine kullanılır.
+Bu paketin yüklenmesi gerekmektedir.
+
+import { coroutine as co} from 'bluebird'
+
+const getRandomUsers = co(function* (n) {
+    const fetchRandomUsers = yield fetch(`https://randomuser.me/api/?results=${n}`)
+    const data = yield fetchRandomUsers.json()
+    return data;
+})
+
+getRandomUsers(20).then(randomUsers => {
+    randomUsers.results.forEach(user => {
+        const { gender , email } = user
+        log(`${gender} - ${email}`)
+    })
+})
+
+
+
+ASYNC AWAIT
+
+Generatorsun eksiği bluebird library e bağlısın ve fetch kullanmak için coroutine ihtiyacın var.
+Bu yüzden async await yapısını kullabilirsin
+
+async function sayesinde async olarak tanımlanmış function içinde await ile promise yield edebilirsin.
+ayrıca async function dan promise dönebilirsin.
+Dolayısıyla then bloğu ile de napacaksan yaparsın.
+
+async function logName(name) {
+    log(name)
+    // 1. we can yield promises using await
+    // 2. return a promise
+    return name
+}
+
+logName('Ali').then(res => {
+    log("result from async function = " + res)
+})
+
+
+async function logName(name) {
+    log(name)
+    // 1. we can yield promises using await
+    const transforName = new Promise((resolve , reject) => {
+        setTimeout(() => {
+            resolve(name.toUpperCase())
+        }, 1000);
+    })
+    const result = await transforName
+    // 2. return a promise
+    return result
+}
+
+logName('Ali').then(res => {
+    log("result from async function = " + res)
+})
+
+
+await keyword ü aslında Promise bir değer dönmesini bekler.
+
+Daha önce generator ile yazdığımız kodu aşağıdaki şekilde daha temiz yazarız.
+
+const getRandomUser = async n => {
+    const fetchRandomUsers = await fetch(`https://randomuser.me/api/?results=${n}`)
+    const data = await fetchRandomUsers.json()
+    data.results.forEach(user => {
+        const { gender , email } = user;
+        log(`${gender} - ${email}`)
+    });
+}
+
+getRandomUser(4)
